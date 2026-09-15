@@ -23,19 +23,23 @@ An ivory-and-gold boutique storefront where customers browse jewellery, build a 
 - Manage products: add, edit, hide, upload photo, set purity, weights, making charge, price, stock count, collection.
 - Manage collections and metal rates (per-gram gold/silver rate used in price calculation).
 - Stock overview with low-stock highlighting.
-- Set the store's WhatsApp number and store name from settings.
+- **Settings page** — edit at any time, saved instantly:
+  - Store name and tagline (shown in the header, footer and page titles).
+  - WhatsApp contact number (used by every order button).
+  - Two editable message templates — one for a single-item order/enquiry, one for a cart order — with simple placeholders like `{store}`, `{item}`, `{purity}`, `{weight}`, `{price}`, `{items}`, `{total}`, plus a live preview of the resulting message.
 
 ## Assumptions (tell me to change any)
 
-- Store name placeholder: **Aurelia Fine Jewellery**; WhatsApp number is a placeholder until you give me the real one.
+- All text on the site is in English.
+- Store name placeholder: **Aurelia Fine Jewellery**; WhatsApp number is a placeholder until you set the real one in Settings.
 - Prices in INR, GST shown as an estimate line.
 - Sample catalogue of ~16 pieces with generated imagery so the store looks real from the first load.
 
 ## Technical notes
 
 - Lovable Cloud enabled for database, auth and image storage.
-- Tables: `products`, `collections`, `metal_rates`, `store_settings`; public read via narrow anon SELECT policies; writes restricted to admins via a separate `user_roles` table and `has_role()` security-definer function (no roles on profiles).
+- Tables: `products`, `collections`, `metal_rates`, `store_settings` (single row: store name, tagline, WhatsApp number, `single_order_template`, `cart_order_template`); public read via narrow anon SELECT policies; writes restricted to admins via a separate `user_roles` table and `has_role()` security-definer function (no roles on profiles).
 - Admin dashboard under `_authenticated/` with a role check; all writes through `createServerFn` with `requireSupabaseAuth` + role verification.
 - Cart in browser local storage (no account needed to order).
-- WhatsApp links via `https://wa.me/<number>?text=<encoded>`; message builder shared by single-item and cart checkout.
+- WhatsApp links via `https://wa.me/<number>?text=<encoded>`; one template renderer resolves `{...}` placeholders from settings, used by both single-item and cart checkout, with sensible defaults if a template is blank.
 - Routes: `/`, `/collections/$slug`, `/product/$slug`, `/cart`, `/auth`, `/admin`, `/admin/products`, `/admin/stock`, `/admin/settings`; each public route gets its own head metadata.

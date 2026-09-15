@@ -38,8 +38,8 @@ An ivory-and-gold boutique storefront where customers browse jewellery, build a 
 ## Technical notes
 
 - Lovable Cloud enabled for database, auth and image storage.
-- Tables: `products`, `collections`, `metal_rates`, `store_settings`; public read via narrow anon SELECT policies; writes restricted to admins via a separate `user_roles` table and `has_role()` security-definer function (no roles on profiles).
+- Tables: `products`, `collections`, `metal_rates`, `store_settings` (single row: store name, tagline, WhatsApp number, `single_order_template`, `cart_order_template`); public read via narrow anon SELECT policies; writes restricted to admins via a separate `user_roles` table and `has_role()` security-definer function (no roles on profiles).
 - Admin dashboard under `_authenticated/` with a role check; all writes through `createServerFn` with `requireSupabaseAuth` + role verification.
 - Cart in browser local storage (no account needed to order).
-- WhatsApp links via `https://wa.me/<number>?text=<encoded>`; message builder shared by single-item and cart checkout.
+- WhatsApp links via `https://wa.me/<number>?text=<encoded>`; one template renderer resolves `{...}` placeholders from settings, used by both single-item and cart checkout, with sensible defaults if a template is blank.
 - Routes: `/`, `/collections/$slug`, `/product/$slug`, `/cart`, `/auth`, `/admin`, `/admin/products`, `/admin/stock`, `/admin/settings`; each public route gets its own head metadata.

@@ -23,11 +23,15 @@ An ivory-and-gold boutique storefront where customers browse jewellery, build a 
 - Manage products: add, edit, hide, upload photo, set purity, weights, making charge, price, stock count, collection.
 - Manage collections and metal rates (per-gram gold/silver rate used in price calculation).
 - Stock overview with low-stock highlighting.
-- Set the store's WhatsApp number and store name from settings.
+- **Settings page** — edit at any time, saved instantly:
+  - Store name and tagline (shown in the header, footer and page titles).
+  - WhatsApp contact number (used by every order button).
+  - Two editable message templates — one for a single-item order/enquiry, one for a cart order — with simple placeholders like `{store}`, `{item}`, `{purity}`, `{weight}`, `{price}`, `{items}`, `{total}`, plus a live preview of the resulting message.
 
 ## Assumptions (tell me to change any)
 
-- Store name placeholder: **Aurelia Fine Jewellery**; WhatsApp number is a placeholder until you give me the real one.
+- All text on the site is in English.
+- Store name placeholder: **Aurelia Fine Jewellery**; WhatsApp number is a placeholder until you set the real one in Settings.
 - Prices in INR, GST shown as an estimate line.
 - Sample catalogue of ~16 pieces with generated imagery so the store looks real from the first load.
 

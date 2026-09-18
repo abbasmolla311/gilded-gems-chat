@@ -21,7 +21,21 @@ export function SiteLayout({ children }: { children: ReactNode }) {
               {data.settings.tagline}
             </span>
           </Link>
-          <nav className="flex items-center gap-5 text-xs tracking-luxe text-muted-foreground">
+          <nav className="flex flex-wrap items-center gap-4 text-xs tracking-luxe text-muted-foreground">
+            <Link
+              to="/"
+              className="transition-colors hover:text-primary"
+              activeProps={{ className: "text-primary" }}
+            >
+              Home
+            </Link>
+            <Link
+              to="/shop"
+              className="transition-colors hover:text-primary"
+              activeProps={{ className: "text-primary" }}
+            >
+              Shop
+            </Link>
             {collections.map((collection) => (
               <Link
                 key={collection.id}
@@ -33,6 +47,27 @@ export function SiteLayout({ children }: { children: ReactNode }) {
                 {collection.name}
               </Link>
             ))}
+            <Link
+              to="/about"
+              className="transition-colors hover:text-primary"
+              activeProps={{ className: "text-primary" }}
+            >
+              About
+            </Link>
+            <Link
+              to="/faq"
+              className="transition-colors hover:text-primary"
+              activeProps={{ className: "text-primary" }}
+            >
+              FAQ
+            </Link>
+            <Link
+              to="/contact"
+              className="transition-colors hover:text-primary"
+              activeProps={{ className: "text-primary" }}
+            >
+              Contact
+            </Link>
             <Link
               to="/cart"
               className="rounded-full border border-primary/40 px-4 py-1.5 text-primary transition-colors hover:bg-accent"
@@ -47,15 +82,49 @@ export function SiteLayout({ children }: { children: ReactNode }) {
 
       <footer className="mt-20 border-t border-border/70 bg-secondary/50">
         <div className="mx-auto max-w-6xl px-5 py-12 text-sm text-muted-foreground">
-          <p className="font-display text-xl text-foreground">{data.settings.store_name}</p>
-          <p className="mt-2 max-w-md">{data.settings.tagline}</p>
-          <div className="gold-rule my-6" />
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <p>Prices are indicative and confirmed on WhatsApp before dispatch.</p>
-            <Link to="/auth" className="hover:text-primary">
-              Store admin
-            </Link>
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            <div>
+              <p className="font-display text-xl text-foreground">{data.settings.store_name}</p>
+              <p className="mt-2 max-w-xs">{data.settings.tagline}</p>
+              <p className="mt-3 text-xs">Prices are indicative and confirmed on WhatsApp before dispatch.</p>
+            </div>
+            <div>
+              <p className="font-display text-base text-foreground">Shop</p>
+              <ul className="mt-3 space-y-1.5 text-xs">
+                <li><Link to="/shop" className="hover:text-primary">All Jewellery</Link></li>
+                {collections.map((c) => (
+                  <li key={c.id}>
+                    <Link to="/collections/$slug" params={{ slug: c.slug }} className="hover:text-primary">
+                      {c.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="font-display text-base text-foreground">Discover</p>
+              <ul className="mt-3 space-y-1.5 text-xs">
+                <li><Link to="/shop" className="hover:text-primary">New Arrivals</Link></li>
+                <li><Link to="/shop" className="hover:text-primary">Best Sellers</Link></li>
+                <li><Link to="/about" className="hover:text-primary">About Us</Link></li>
+                <li><Link to="/faq" className="hover:text-primary">FAQ</Link></li>
+                <li><Link to="/contact" className="hover:text-primary">Contact Us</Link></li>
+              </ul>
+            </div>
+            <div>
+              <p className="font-display text-base text-foreground">Customer Support</p>
+              <ul className="mt-3 space-y-1.5 text-xs">
+                <li><Link to="/cart" className="hover:text-primary">Cart</Link></li>
+                <li><Link to="/contact" className="hover:text-primary">Shipping & Returns</Link></li>
+                <li><Link to="/faq" className="hover:text-primary">Help Centre</Link></li>
+                <li><Link to="/auth" className="hover:text-primary">Store Admin</Link></li>
+              </ul>
+            </div>
           </div>
+          <div className="gold-rule my-8" />
+          <p className="text-center text-xs">
+            &copy; {new Date().getFullYear()} {data.settings.store_name}. All rights reserved.
+          </p>
         </div>
       </footer>
     </div>

@@ -3,6 +3,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { storefrontQuery } from "@/lib/storefront.functions";
 import { SiteLayout } from "@/components/site-layout";
 import { ProductCard } from "@/components/product-card";
+import { formatMoney } from "@/lib/pricing";
 
 export const Route = createFileRoute("/")({
   loader: ({ context }) => context.queryClient.ensureQueryData(storefrontQuery),
@@ -27,7 +28,10 @@ export const Route = createFileRoute("/")({
 function Home() {
   const { data } = useSuspenseQuery(storefrontQuery);
   const featured = data.products.filter((p) => p.active && p.featured).slice(0, 8);
+  const newArrivals = data.products.filter((p) => p.active && p.is_new_arrival).slice(0, 4);
+  const bestSellers = data.products.filter((p) => p.active && p.is_best_seller).slice(0, 4);
   const collections = data.collections.filter((c) => c.active);
+  const currency = data.settings.currency;
 
   return (
     <SiteLayout>
@@ -51,21 +55,21 @@ function Home() {
                 so you know exactly what you are paying for.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
+                <Link
+                  to="/shop"
+                  className="rounded-sm bg-primary px-6 py-3 text-xs tracking-luxe text-primary-foreground transition-opacity hover:opacity-90"
+                >
+                  Shop now
+                </Link>
                 {collections[0] && (
                   <Link
                     to="/collections/$slug"
                     params={{ slug: collections[0].slug }}
-                    className="rounded-sm bg-primary px-6 py-3 text-xs tracking-luxe text-primary-foreground transition-opacity hover:opacity-90"
+                    className="rounded-sm border border-primary/50 px-6 py-3 text-xs tracking-luxe text-primary"
                   >
-                    Browse collection
+                    Explore collections
                   </Link>
                 )}
-                <Link
-                  to="/cart"
-                  className="rounded-sm border border-primary/50 px-6 py-3 text-xs tracking-luxe text-primary"
-                >
-                  View cart
-                </Link>
               </div>
             </div>
           </div>
@@ -101,11 +105,87 @@ function Home() {
       </section>
 
       <section className="mx-auto max-w-6xl px-5 pb-4">
-        <h2 className="font-display text-3xl text-foreground">Featured pieces</h2>
+        <div className="flex items-center justify-between">
+          <h2 className="font-display text-3xl text-foreground">Featured pieces</h2>
+          <Link to="/shop" className="text-xs tracking-luxe text-primary hover:underline">
+            View all
+          </Link>
+        </div>
         <div className="gold-rule my-6" />
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {featured.map((product) => (
             <ProductCard key={product.id} product={product} settings={data.settings} />
+          ))}
+        </div>
+      </section>
+
+      {newArrivals.length > 0 && (
+        <section className="mx-auto max-w-6xl px-5 py-16">
+          <div className="flex items-center justify-between">
+            <h2 className="font-display text-3xl text-foreground">New arrivals</h2>
+            <Link to="/shop" className="text-xs tracking-luxe text-primary hover:underline">
+              View all
+            </Link>
+          </div>
+          <div className="gold-rule my-6" />
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {newArrivals.map((product) => (
+              <ProductCard key={product.id} product={product} settings={data.settings} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {bestSellers.length > 0 && (
+        <section className="mx-auto max-w-6xl px-5 pb-4">
+          <div className="flex items-center justify-between">
+            <h2 className="font-display text-3xl text-foreground">Best sellers</h2>
+            <Link to="/shop" className="text-xs tracking-luxe text-primary hover:underline">
+              View all
+            </Link>
+          </div>
+          <div className="gold-rule my-6" />
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {bestSellers.map((product) => (
+              <ProductCard key={product.id} product={product} settings={data.settings} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section className="mx-auto max-w-6xl px-5 py-16">
+        <h2 className="font-display text-3xl text-foreground">Shop by category</h2>
+        <div className="gold-rule my-6" />
+        <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-5">
+          {data.categories.filter((c) => c.active).slice(0, 10).map((cat) => (
+            <Link
+              key={cat.id}
+              to="/shop"
+              className="rounded-sm border border-border/70 bg-card px-4 py-4 text-center transition-all hover:-translate-y-0.5 hover:shadow-luxe"
+            >
+              <p className="font-display text-base text-foreground">{cat.name}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-5 py-8">
+        <h2 className="font-display text-3xl text-foreground">Shop by budget</h2>
+        <div className="gold-rule my-6" />
+        <div className="grid gap-3 sm:grid-cols-4">
+          {[
+            { label: "Under " + formatMoney(1000, currency), slug: "" },
+            { label: formatMoney(1000, currency) + " — " + formatMoney(10000, currency), slug: "" },
+            { label: formatMoney(10000, currency) + " — " + formatMoney(100000, currency), slug: "" },
+            { label: "Above " + formatMoney(100000, currency), slug: "" },
+          ].map((budget, i) => (
+            <Link
+              key={i}
+              to="/shop"
+              className="rounded-sm border border-border/70 bg-card px-4 py-4 text-center transition-all hover:-translate-y-0.5 hover:shadow-luxe"
+            >
+              <p className="text-sm text-muted-foreground">{budget.label}</p>
+            </Link>
           ))}
         </div>
       </section>

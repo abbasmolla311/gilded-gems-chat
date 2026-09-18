@@ -11,8 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CartRouteImport } from './routes/cart'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as ShopRouteImport } from './routes/shop'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as CollectionsSlugRouteImport } from './routes/collections.$slug'
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
@@ -31,6 +35,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -39,6 +48,21 @@ const AuthRoute = AuthRouteImport.update({
 const CartRoute = CartRouteImport.update({
   id: '/cart',
   path: '/cart',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShopRoute = ShopRouteImport.update({
+  id: '/shop',
+  path: '/shop',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
@@ -87,8 +111,12 @@ const ApiPublicProductImageSplatRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
+  '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
+  '/shop': typeof ShopRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/collections/$slug': typeof CollectionsSlugRoute
   '/product/$slug': typeof ProductSlugRoute
@@ -100,8 +128,12 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
+  '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
+  '/shop': typeof ShopRoute
   '/collections/$slug': typeof CollectionsSlugRoute
   '/product/$slug': typeof ProductSlugRoute
   '/admin/collections': typeof AuthenticatedAdminCollectionsRoute
@@ -114,8 +146,12 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
+  '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
+  '/shop': typeof ShopRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/collections/$slug': typeof CollectionsSlugRoute
   '/product/$slug': typeof ProductSlugRoute
@@ -129,8 +165,12 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/auth'
     | '/cart'
+    | '/contact'
+    | '/faq'
+    | '/shop'
     | '/admin'
     | '/collections/$slug'
     | '/product/$slug'
@@ -142,8 +182,12 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/auth'
     | '/cart'
+    | '/contact'
+    | '/faq'
+    | '/shop'
     | '/collections/$slug'
     | '/product/$slug'
     | '/admin/collections'
@@ -155,8 +199,12 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/about'
     | '/auth'
     | '/cart'
+    | '/contact'
+    | '/faq'
+    | '/shop'
     | '/_authenticated/admin'
     | '/collections/$slug'
     | '/product/$slug'
@@ -170,8 +218,12 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
   CartRoute: typeof CartRoute
+  ContactRoute: typeof ContactRoute
+  FaqRoute: typeof FaqRoute
+  ShopRoute: typeof ShopRoute
   CollectionsSlugRoute: typeof CollectionsSlugRoute
   ProductSlugRoute: typeof ProductSlugRoute
   ApiPublicProductImageSplatRoute: typeof ApiPublicProductImageSplatRoute
@@ -193,6 +245,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -205,6 +264,27 @@ declare module '@tanstack/react-router' {
       path: '/cart'
       fullPath: '/cart'
       preLoaderRoute: typeof CartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shop': {
+      id: '/shop'
+      path: '/shop'
+      fullPath: '/shop'
+      preLoaderRoute: typeof ShopRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
@@ -297,8 +377,12 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
   CartRoute: CartRoute,
+  ContactRoute: ContactRoute,
+  FaqRoute: FaqRoute,
+  ShopRoute: ShopRoute,
   CollectionsSlugRoute: CollectionsSlugRoute,
   ProductSlugRoute: ProductSlugRoute,
   ApiPublicProductImageSplatRoute: ApiPublicProductImageSplatRoute,

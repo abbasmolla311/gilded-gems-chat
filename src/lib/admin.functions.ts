@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import type { Collection, MetalRate, Product, StoreSettings } from "./store-types";
+import type { Category, Collection, MetalRate, Product, StoreSettings, Subcategory } from "./store-types";
 
 type Ctx = { supabase: any; userId: string };
 
@@ -49,9 +49,11 @@ export const getAdminData = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     const ctx = context as unknown as Ctx;
     await assertAdmin(ctx);
-    const [products, collections, rates, settings] = await Promise.all([
+    const [products, collections, categories, subcategories, rates, settings] = await Promise.all([
       ctx.supabase.from("products").select("*").order("name", { ascending: true }),
       ctx.supabase.from("collections").select("*").order("sort_order", { ascending: true }),
+      ctx.supabase.from("categories").select("*").order("sort_order", { ascending: true }),
+      ctx.supabase.from("subcategories").select("*").order("sort_order", { ascending: true }),
       ctx.supabase.from("metal_rates").select("*").order("metal", { ascending: true }),
       ctx.supabase.from("store_settings").select("*").maybeSingle(),
     ]);
@@ -59,6 +61,8 @@ export const getAdminData = createServerFn({ method: "GET" })
     return {
       products: (products.data ?? []) as Product[],
       collections: (collections.data ?? []) as Collection[],
+      categories: (categories.data ?? []) as Category[],
+      subcategories: (subcategories.data ?? []) as Subcategory[],
       rates: (rates.data ?? []) as MetalRate[],
       settings: settings.data as StoreSettings | null,
     };
@@ -71,6 +75,8 @@ export type ProductInput = {
   name: string;
   description: string;
   collection_id: string | null;
+  category_id: string | null;
+  subcategory_id: string | null;
   metal: string;
   purity: string;
   gross_weight: number;
@@ -78,10 +84,19 @@ export type ProductInput = {
   stone_details: string;
   making_charge_percent: number;
   price: number;
+  original_price: number;
   stock: number;
   featured: boolean;
   active: boolean;
   image_url: string;
+  material: string;
+  stone_type: string;
+  size: string;
+  colour: string;
+  rating: number;
+  review_count: number;
+  is_new_arrival: boolean;
+  is_best_seller: boolean;
 };
 
 export const saveProduct = createServerFn({ method: "POST" })

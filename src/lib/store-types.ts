@@ -17,6 +17,30 @@ export type Collection = {
   active: boolean;
 };
 
+export type Category = {
+  id: string;
+  slug: string;
+  name: string;
+  sort_order: number;
+  active: boolean;
+};
+
+export type Subcategory = {
+  id: string;
+  category_id: string;
+  slug: string;
+  name: string;
+  sort_order: number;
+  active: boolean;
+};
+
+export type ProductImage = {
+  id: string;
+  product_id: string;
+  image_url: string;
+  sort_order: number;
+};
+
 export type Product = {
   id: string;
   slug: string;
@@ -24,6 +48,8 @@ export type Product = {
   name: string;
   description: string;
   collection_id: string | null;
+  category_id: string | null;
+  subcategory_id: string | null;
   metal: string;
   purity: string;
   gross_weight: number;
@@ -31,10 +57,20 @@ export type Product = {
   stone_details: string;
   making_charge_percent: number;
   price: number;
+  original_price: number;
   stock: number;
   featured: boolean;
   active: boolean;
   image_url: string;
+  material: string;
+  stone_type: string;
+  size: string;
+  colour: string;
+  rating: number;
+  review_count: number;
+  is_new_arrival: boolean;
+  is_best_seller: boolean;
+  images?: ProductImage[];
 };
 
 export type MetalRate = {
@@ -47,6 +83,8 @@ export type MetalRate = {
 export type Storefront = {
   settings: StoreSettings;
   collections: Collection[];
+  categories: Category[];
+  subcategories: Subcategory[];
   products: Product[];
   rates: MetalRate[];
 };

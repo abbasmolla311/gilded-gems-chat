@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      categories: {
+        Row: {
+          active: boolean
+          created_at: string
+          id: string
+          name: string
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          name: string
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          name?: string
+          slug?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       collections: {
         Row: {
           active: boolean
@@ -74,68 +104,133 @@ export type Database = {
         }
         Relationships: []
       }
+      product_images: {
+        Row: {
+          created_at: string
+          id: string
+          image_url: string
+          product_id: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_url: string
+          product_id: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_url?: string
+          product_id?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_images_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           active: boolean
+          category_id: string | null
           code: string
           collection_id: string | null
+          colour: string
           created_at: string
           description: string
           featured: boolean
           gross_weight: number
           id: string
           image_url: string
+          is_best_seller: boolean
+          is_new_arrival: boolean
           making_charge_percent: number
+          material: string
           metal: string
           name: string
           net_weight: number
+          original_price: number
           price: number
           purity: string
+          rating: number
+          review_count: number
+          size: string
           slug: string
           stock: number
           stone_details: string
+          stone_type: string
+          subcategory_id: string | null
           updated_at: string
         }
         Insert: {
           active?: boolean
+          category_id?: string | null
           code: string
           collection_id?: string | null
+          colour?: string
           created_at?: string
           description?: string
           featured?: boolean
           gross_weight?: number
           id?: string
           image_url?: string
+          is_best_seller?: boolean
+          is_new_arrival?: boolean
           making_charge_percent?: number
+          material?: string
           metal?: string
           name: string
           net_weight?: number
+          original_price?: number
           price?: number
           purity?: string
+          rating?: number
+          review_count?: number
+          size?: string
           slug: string
           stock?: number
           stone_details?: string
+          stone_type?: string
+          subcategory_id?: string | null
           updated_at?: string
         }
         Update: {
           active?: boolean
+          category_id?: string | null
           code?: string
           collection_id?: string | null
+          colour?: string
           created_at?: string
           description?: string
           featured?: boolean
           gross_weight?: number
           id?: string
           image_url?: string
+          is_best_seller?: boolean
+          is_new_arrival?: boolean
           making_charge_percent?: number
+          material?: string
           metal?: string
           name?: string
           net_weight?: number
+          original_price?: number
           price?: number
           purity?: string
+          rating?: number
+          review_count?: number
+          size?: string
           slug?: string
           stock?: number
           stone_details?: string
+          stone_type?: string
+          subcategory_id?: string | null
           updated_at?: string
         }
         Relationships: [
@@ -144,6 +239,61 @@ export type Database = {
             columns: ["collection_id"]
             isOneToOne: false
             referencedRelation: "collections"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_subcategory_id_fkey"
+            columns: ["subcategory_id"]
+            isOneToOne: false
+            referencedRelation: "subcategories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subcategories: {
+        Row: {
+          active: boolean
+          category_id: string
+          created_at: string
+          id: string
+          name: string
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          category_id: string
+          created_at?: string
+          id?: string
+          name: string
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          category_id?: string
+          created_at?: string
+          id?: string
+          name?: string
+          slug?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subcategories_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
             referencedColumns: ["id"]
           },
         ]

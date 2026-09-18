@@ -16,6 +16,17 @@ export function formatWeight(grams: number) {
   return `${Number(grams).toFixed(3).replace(/0+$/, "").replace(/\.$/, "")} g`;
 }
 
+export function discountPercent(product: Product): number {
+  const original = Number(product.original_price);
+  const current = Number(product.price);
+  if (original <= 0 || original <= current) return 0;
+  return Math.round(((original - current) / original) * 100);
+}
+
+export function hasDiscount(product: Product): boolean {
+  return discountPercent(product) > 0;
+}
+
 export type Breakdown = {
   metalValue: number;
   makingCharges: number;

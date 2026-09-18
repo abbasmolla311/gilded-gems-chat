@@ -10,19 +10,37 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CartRouteImport } from './routes/cart'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as CollectionsSlugRouteImport } from './routes/collections.$slug'
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
+import { Route as ApiPublicProductImageSplatRouteImport } from './routes/api/public/product-image.$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CartRoute = CartRouteImport.update({
   id: '/cart',
   path: '/cart',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const CollectionsSlugRoute = CollectionsSlugRouteImport.update({
   id: '/collections/$slug',
@@ -34,39 +52,81 @@ const ProductSlugRoute = ProductSlugRouteImport.update({
   path: '/product/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicProductImageSplatRoute =
+  ApiPublicProductImageSplatRouteImport.update({
+    id: '/api/public/product-image/$',
+    path: '/api/public/product-image/$',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/collections/$slug': typeof CollectionsSlugRoute
   '/product/$slug': typeof ProductSlugRoute
+  '/api/public/product-image/$': typeof ApiPublicProductImageSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/collections/$slug': typeof CollectionsSlugRoute
   '/product/$slug': typeof ProductSlugRoute
+  '/api/public/product-image/$': typeof ApiPublicProductImageSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/collections/$slug': typeof CollectionsSlugRoute
   '/product/$slug': typeof ProductSlugRoute
+  '/api/public/product-image/$': typeof ApiPublicProductImageSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/cart' | '/collections/$slug' | '/product/$slug'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/cart'
+    | '/admin'
+    | '/collections/$slug'
+    | '/product/$slug'
+    | '/api/public/product-image/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/cart' | '/collections/$slug' | '/product/$slug'
-  id: '__root__' | '/' | '/cart' | '/collections/$slug' | '/product/$slug'
+  to:
+    | '/'
+    | '/auth'
+    | '/cart'
+    | '/admin'
+    | '/collections/$slug'
+    | '/product/$slug'
+    | '/api/public/product-image/$'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/cart'
+    | '/_authenticated/admin'
+    | '/collections/$slug'
+    | '/product/$slug'
+    | '/api/public/product-image/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
   CartRoute: typeof CartRoute
   CollectionsSlugRoute: typeof CollectionsSlugRoute
   ProductSlugRoute: typeof ProductSlugRoute
+  ApiPublicProductImageSplatRoute: typeof ApiPublicProductImageSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -78,12 +138,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/cart': {
       id: '/cart'
       path: '/cart'
       fullPath: '/cart'
       preLoaderRoute: typeof CartRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/collections/$slug': {
       id: '/collections/$slug'
@@ -99,14 +180,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/product-image/$': {
+      id: '/api/public/product-image/$'
+      path: '/api/public/product-image/$'
+      fullPath: '/api/public/product-image/$'
+      preLoaderRoute: typeof ApiPublicProductImageSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
   CartRoute: CartRoute,
   CollectionsSlugRoute: CollectionsSlugRoute,
   ProductSlugRoute: ProductSlugRoute,
+  ApiPublicProductImageSplatRoute: ApiPublicProductImageSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

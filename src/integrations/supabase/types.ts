@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      categories: {
+        Row: {
+          active: boolean
+          created_at: string
+          id: string
+          name: string
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          name: string
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          name?: string
+          slug?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       collections: {
         Row: {
           active: boolean
@@ -50,6 +80,48 @@ export type Database = {
         }
         Relationships: []
       }
+      consultations: {
+        Row: {
+          appointment_type: string
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          notes: string
+          phone: string
+          preferred_date: string
+          preferred_time: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          appointment_type: string
+          created_at?: string
+          email?: string
+          full_name: string
+          id?: string
+          notes?: string
+          phone: string
+          preferred_date: string
+          preferred_time: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          appointment_type?: string
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          notes?: string
+          phone?: string
+          preferred_date?: string
+          preferred_time?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       metal_rates: {
         Row: {
           id: string
@@ -77,65 +149,98 @@ export type Database = {
       products: {
         Row: {
           active: boolean
+          category_id: string | null
           code: string
           collection_id: string | null
+          colour: string
           created_at: string
           description: string
           featured: boolean
           gross_weight: number
           id: string
           image_url: string
+          is_best_seller: boolean
+          is_new_arrival: boolean
           making_charge_percent: number
+          material: string
           metal: string
           name: string
           net_weight: number
+          original_price: number
           price: number
           purity: string
+          rating: number
+          review_count: number
+          size: string
           slug: string
           stock: number
           stone_details: string
+          stone_type: string
+          subcategory_id: string | null
           updated_at: string
         }
         Insert: {
           active?: boolean
+          category_id?: string | null
           code: string
           collection_id?: string | null
+          colour?: string
           created_at?: string
           description?: string
           featured?: boolean
           gross_weight?: number
           id?: string
           image_url?: string
+          is_best_seller?: boolean
+          is_new_arrival?: boolean
           making_charge_percent?: number
+          material?: string
           metal?: string
           name: string
           net_weight?: number
+          original_price?: number
           price?: number
           purity?: string
+          rating?: number
+          review_count?: number
+          size?: string
           slug: string
           stock?: number
           stone_details?: string
+          stone_type?: string
+          subcategory_id?: string | null
           updated_at?: string
         }
         Update: {
           active?: boolean
+          category_id?: string | null
           code?: string
           collection_id?: string | null
+          colour?: string
           created_at?: string
           description?: string
           featured?: boolean
           gross_weight?: number
           id?: string
           image_url?: string
+          is_best_seller?: boolean
+          is_new_arrival?: boolean
           making_charge_percent?: number
+          material?: string
           metal?: string
           name?: string
           net_weight?: number
+          original_price?: number
           price?: number
           purity?: string
+          rating?: number
+          review_count?: number
+          size?: string
           slug?: string
           stock?: number
           stone_details?: string
+          stone_type?: string
+          subcategory_id?: string | null
           updated_at?: string
         }
         Relationships: [
@@ -180,6 +285,47 @@ export type Database = {
           whatsapp_number?: string
         }
         Relationships: []
+      }
+      subcategories: {
+        Row: {
+          active: boolean
+          category_id: string
+          created_at: string
+          id: string
+          name: string
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          category_id: string
+          created_at?: string
+          id?: string
+          name: string
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          category_id?: string
+          created_at?: string
+          id?: string
+          name?: string
+          slug?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subcategories_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
